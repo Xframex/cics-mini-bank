@@ -1,0 +1,28 @@
+# Local editor / tooling
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Temporary logs and outputs
+*.log
+*.tmp
+*.bak
+*.class
+*.exe
+
+# Sensitive local files (never publish)
+.env
+.env.*
+*.pem
+*.key
+*.p12
+*.jks
+*.pfx
+
+# Local z/OS / JCL outputs, not source
+*.spool
+*.jes
+*.dump
+*.ceeedump

@@ -1,0 +1,26 @@
+Run inside YOUR CICS region (for example CXZ63170).
+Resource definitions require appropriate CEDA authorization.
+
+CEDA DEFINE PROGRAM(BKONL) GROUP(BKDEMO) LANGUAGE(COBOL)
+CEDA DEFINE TRANSACTION(BK01) GROUP(BKDEMO) PROGRAM(BKONL)
+CEDA DEFINE MAPSET(BKMAP) GROUP(BKDEMO)
+CEDA DEFINE FILE(BKACCT) GROUP(BKDEMO) DSNAME(Z63170.BANK.ACCT.KSDS) RECORDSIZE(40) KEYLENGTH(8) READ(YES) UPDATE(YES) ADD(NO) DELETE(NO) BROWSE(NO) RECOVERY(BACKOUTONLY)
+CEDA INSTALL GROUP(BKDEMO)
+
+Verify with CEMT I PROG(BKONL)
+Verify with CEMT I MAPSET(BKMAP)
+Verify with CEMT I FILE(BKACCT)
+If the BKACCT file is closed: CEMT SET FILE(BKACCT) OPEN
+
+Your CICS region must be able to load BKONL and BKMAP from
+Z63170.BANK.LOAD via a DFHRPL library concatenation or
+an authorized LIBRARY resource. This may require an admin.
+
+For the snapshot job:
+1. Stop application traffic; verify no in-flight bank UOW.
+2. CEMT SET FILE(BKACCT) CLOSED
+3. Submit jcl/05_DAY.jcl
+4. CEMT SET FILE(BKACCT) OPEN
+5. Test transaction BK01 and check batch REPORT SYSOUT.
+
+NEVER redefine/reseed a dataset containing wanted changes.
